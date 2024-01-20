@@ -80,6 +80,7 @@ def Sigmoid(layer):
 def Cost(x, y):
     return abs(x-y)
 
+# assign inputs and target outputs
 inputs = [[1],[2],[3],[4],[5],[6],[10],[30],[50],[100]]
 y = [[5],[7.5],[10],[12.5],[15],[17.5],[27.5],[77.5],[127.5],[252.5]]
 
