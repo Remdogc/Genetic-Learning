@@ -7,7 +7,7 @@ class LayerDense():
         self.output_size = output_size
         self.input = np.zeros(input_size)
         self.weight = np.random.rand(output_size, input_size)
-        self.bias = np.zeros(output_size)
+        self.bias = np.ones(output_size)
 
     def forward(self, activation):
         self.output = np.zeros(self.output_size)
@@ -80,30 +80,37 @@ def Sigmoid(layer):
 def Cost(x, y):
     return abs(x-y)
 
-inputs = [[1],[2],[3],[4],[5],[6]]
-y = [[2],[4],[6],[8],[10],[12]]
+inputs = [[1],[2],[3],[4],[5],[6],[10],[30],[50],[100]]
+y = [[5],[7.5],[10],[12.5],[15],[17.5],[27.5],[77.5],[127.5],[252.5]]
 
 # inputs = [[0,0],[0,1],[1,0],[1,1]]
 # y = [[0],[0],[0],[1]]
 
 model = Model()
 
-model.addLayer(1,3)
-model.addLayer(3,3)
-model.addLayer(3,1)
+model.addLayer(1,5)
+model.addLayer(5,5)
+model.addLayer(5,5)
+model.addLayer(5,1)
 
 best_model = Model()
 best_model = copy.deepcopy(model)
 
-output = model.forward(inputs[0])
+best_cost = 0
 
-best_cost = Cost(output[0], y[0][0])
+for i in range (len(inputs)):
+
+    output = model.forward(inputs[i])
+
+    best_cost += Cost(output[0], y[i][0])
+
+best_cost /= len(inputs)
 
 print(output)
 print(best_cost)
 
 
-for i in range (25000):
+for i in range (5000):
 
     model.mutate()
     cost = 0
@@ -114,6 +121,7 @@ for i in range (25000):
 
         cost += Cost(output[0], y[i][0])
 
+    cost /= len(inputs)
 
     if (cost < best_cost):
         best_cost = cost
@@ -130,3 +138,13 @@ print(str(best_cost) + "\n")
 
 print(best_model.forward([7]))
 
+
+
+
+n = ""
+while (True):
+    print("Input: ")
+    n = input()
+    if (n == 'exit'):
+        break
+    print(best_model.forward([int(n)]))
